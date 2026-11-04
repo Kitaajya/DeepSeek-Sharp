@@ -34,6 +34,9 @@ public class DeepSeekSharpApplication {
     public static final String VERSION = "0.1.0";
 
     public static void main(String[] args) {
+
+        System.out.println("Hello DeepSeek#!");
+
         CliOptions options = CliOptions.parse(args);
         ConsoleUi ui = new ConsoleUi(ConsoleUi.colorSupported(options.noColor()));
 
