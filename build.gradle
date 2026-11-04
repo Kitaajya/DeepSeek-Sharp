@@ -6,11 +6,11 @@ plugins {
 
 group = 'org.designer'
 version = '0.0.1-SNAPSHOT'
-description = 'DeepSeek_Sharp'
+description = 'DeepSeek Harness - terminal chat client for DeepSeek'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(24)
     }
 }
 
@@ -23,10 +23,13 @@ ext {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.ai:spring-ai-starter-model-deepseek'
-    implementation 'org.springframework.ai:spring-ai-starter-model-ollama'
-    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
@@ -34,6 +37,23 @@ dependencyManagement {
     imports {
         mavenBom "org.springframework.ai:spring-ai-bom:${springAiVersion}"
     }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << '-parameters'
+}
+
+// bootRun 默认不把终端交给程序，必须显式把 stdin 接进去，否则 ReadLine 立刻 EOF
+tasks.named('bootRun') {
+    standardInput = System.in
+    if (java.toolchain.languageVersion.get().asInt() >= 24) {
+        jvmArgs '--enable-native-access=ALL-UNNAMED', '--sun-misc-unsafe-memory-access=allow'
+    }
+}
+
+tasks.named('bootJar') {
+    archiveFileName = 'deepseek-harness.jar'
 }
 
 tasks.named('test') {
