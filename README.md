@@ -1,6 +1,6 @@
-# DeepSeek Harness
+# DeepSeek#
 
-在终端里和 DeepSeek 聊天的命令行工具。技术栈：**Java 24 · Spring Boot 4 · Spring AI 2 · MySQL 8**。
+在终端里和 DeepSeek 聊天的命令行工具。我起名为DeepSeek#（DeepSeek Sharp）。技术栈：**Java 24 · Spring Boot 4 · Spring AI 2 · MySQL 8**。
 
 填一次 API Key，之后 `./gradlew bootRun` 或 `java -jar` 就能直接开聊：
 
